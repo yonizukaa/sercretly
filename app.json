@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "wp-clone",
-    "slug": "wp-clone",
+    "name": "Secretly",
+    "slug": "Secretly",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/welcome-img.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

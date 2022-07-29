@@ -3,7 +3,11 @@ import { Text, View, LogBox } from "react-native";
 import { useAssets } from "expo-asset";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  useRoute,
+  useIsFocused,
+} from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import SignIn from "./screens/SignIn";
@@ -16,6 +20,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Contacts from "./screens/Contacts";
 import Chat from "./screens/Chat";
 import ChatHeader from "./components/ChatHeader";
+
 LogBox.ignoreLogs([
   "Setting a timer",
   "AsyncStorage has been extracted from react-native core and will be removed in a future release.",
@@ -25,6 +30,7 @@ const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
 function App() {
+  const useIsFocused = useIsFocused;
   const [currUser, setCurrUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const {
@@ -73,7 +79,7 @@ function App() {
             name="home"
             options={{ title: "Secretly" }}
             component={Home}
-          />
+          ></Stack.Screen>
           <Stack.Screen
             name="contacts"
             options={{ title: "Select Contacts" }}
@@ -81,7 +87,7 @@ function App() {
           />
           <Stack.Screen
             name="chat"
-            component={Chat}
+            component={IsLeaveChat}
             options={{ headerTitle: (props) => <ChatHeader {...props} /> }}
           />
         </Stack.Navigator>
@@ -126,6 +132,21 @@ function Home() {
       <Tab.Screen name="chats" component={Chats} />
     </Tab.Navigator>
   );
+}
+export function IsLeaveChat({ navigation }) {
+  const isOnScreen = false;
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener("blur", () => {
+      isOnScreen === true;
+      console.log("haut");
+      return isOnScreen;
+    });
+    isOnScreen === false;
+    console.log(isOnScreen);
+    return unsubscribe;
+  }, [navigation]);
+
+  return <Chat />;
 }
 
 function Main() {

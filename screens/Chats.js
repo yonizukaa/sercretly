@@ -42,10 +42,8 @@ export default function Chats() {
       {rooms.map((room) => (
         <ListItem
           type="chat"
-          description={room.lastMessage.text}
           key={room.id}
           room={room}
-          time={room.lastMessage.createdAt}
           user={getUserB(room.userB, contacts)}
         />
       ))}

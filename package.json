@@ -1,7 +1,5 @@
 {
-  "name": "secretly",
   "main": "node_modules/expo/AppEntry.js",
-  
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -9,8 +7,8 @@
     "web": "expo start --web",
     "eject": "expo eject"
   },
-  
   "dependencies": {
+    "@react-native-community/cli": "^8.0.4",
     "@react-native-masked-view/masked-view": "0.2.5",
     "@react-navigation/material-top-tabs": "^6.0.6",
     "@react-navigation/native": "^6.0.6",
@@ -25,12 +23,11 @@
     "nanoid": "^3.1.30",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "react-native": "0.64.3",
+    "react-native": "0.64.2",
     "react-native-easy-grid": "^0.2.2",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-get-random-values": "~1.7.0",
     "react-native-gifted-chat": "^0.16.3",
-    "react-native-image-view": "^2.1.9",
     "react-native-image-viewing": "^0.2.1",
     "react-native-pager-view": "5.4.6",
     "react-native-safe-area-context": "3.3.2",
