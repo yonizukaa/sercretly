@@ -134,14 +134,14 @@ function Home() {
   );
 }
 export function IsLeaveChat({ navigation }) {
-  const isOnScreen = false;
+  let isOnScreen = false;
   React.useEffect(() => {
     const unsubscribe = navigation.addListener("blur", () => {
-      isOnScreen === true;
-      console.log("haut");
+      isOnScreen = true;
+      console.log(isOnScreen);
       return isOnScreen;
     });
-    isOnScreen === false;
+    isOnScreen = false;
     console.log(isOnScreen);
     return unsubscribe;
   }, [navigation]);

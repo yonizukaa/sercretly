@@ -11,7 +11,7 @@ import {
   Image,
 } from "react-native";
 import { Ionicons, SimpleLineIcons, AntDesign } from "@expo/vector-icons";
-import { auth, db } from "../firebase";
+import { app, auth, db } from "../firebase";
 import GlobalContext from "../context/Context";
 import {
   addDoc,
@@ -20,6 +20,7 @@ import {
   onSnapshot,
   setDoc,
   updateDoc,
+  Firestore,
 } from "@firebase/firestore";
 import {
   Actions,
@@ -29,43 +30,8 @@ import {
 } from "react-native-gifted-chat";
 import { pickImage, uploadImage } from "../utils";
 import ImageView from "react-native-image-viewing";
-import { IsLeaveChat } from "../App";
 
 const randomId = nanoid();
-
-const EditTextScreen = ({ navigation }) => {
-  const [text, setText] = React.useState("");
-
-  const hasUnsavedChanges = Boolean(text);
-
-  React.useEffect(
-    () =>
-      navigation.addListener("beforeRemove", (e) => {
-        const action = e.data.action;
-        if (!hasUnsavedChanges) {
-          return;
-        }
-
-        e.preventDefault();
-
-        Alert.alert(
-          "Discard changes?",
-          "You have unsaved changes. Are you sure to discard them and leave the screen?",
-          [
-            { text: "Don't leave", style: "cancel", onPress: () => {} },
-            {
-              text: "Discard",
-              style: "destructive",
-              onPress: () => navigation.dispatch(action),
-            },
-          ]
-        );
-      }),
-    [hasUnsavedChanges, navigation]
-  );
-
-  return <View></View>;
-};
 
 export default function Chat() {
   const navigation = useNavigation();
@@ -134,6 +100,7 @@ export default function Chat() {
     const unsubscribe = onSnapshot(roomMessagesRef, (querySnapshot) => {
       const messagesFirestore = querySnapshot
         .docChanges()
+
         .filter(({ type }) => type === "added")
         .map(({ doc }) => {
           const message = doc.data();
@@ -186,9 +153,16 @@ export default function Chat() {
       await sendImage(result.uri);
     }
   }
-  const exit = () => {
-    navigation.navigate("./chats.js");
-  };
+  function deleteMessage() {
+    // reference to the parent
+
+    //collection(db, "rooms", roomId, "messages")
+    doc(db, "rooms", roomId)
+      .delete()
+      .then(() => {
+        console.log("User deleted!");
+      });
+  }
 
   return (
     <GiftedChat
@@ -205,7 +179,7 @@ export default function Chat() {
             bottom: 5,
             zIndex: 9999,
           }}
-          onPressActionButton={handlePhotoPicker}
+          onPressActionButton={deleteMessage}
           icon={() => (
             <Ionicons name="camera" size={30} color={colors.iconGray} />
           )}
@@ -246,8 +220,8 @@ export default function Chat() {
         <InputToolbar
           {...props}
           containerStyle={{
-            marginLeft: 30,
-            marginRight: 20,
+            marginLeft: 7,
+            marginRight: 10,
             marginBottom: 2,
             borderRadius: 30,
             paddingTop: 5,
